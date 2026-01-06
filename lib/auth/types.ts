@@ -17,12 +17,12 @@ type LoginInput = {
 
 type AuthState = {
     user: User | null;
-    status: AuthStatus;
+    userStatus: AuthStatus;
 };
 
 type AuthContextValue= AuthState & {
     login: (input: LoginInput) => Promise<void>;
-    ogout: () => void; 
+    logout: () => void; 
     hasRole: (role: Role) => boolean;
 };
 

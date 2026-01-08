@@ -8,7 +8,7 @@ import { mockLogin } from "@/lib/auth/mockAuth";
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
-function AuthProvider({children}: {children:React.ReactNode}) {
+export function AuthProvider({children}: {children:React.ReactNode}) {
     const [state, setState] = useState<AuthState>({
         user: null,
         userStatus: 'loading'
@@ -52,6 +52,7 @@ function AuthProvider({children}: {children:React.ReactNode}) {
     </AuthContext.Provider>
   
 }
+
 export function useAuth(){
     const context = useContext(AuthContext);
     if(!context){
@@ -60,5 +61,5 @@ export function useAuth(){
     return context
 }
 
-export {AuthProvider}
+
 

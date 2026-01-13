@@ -15,7 +15,12 @@ export default function LoginPage() {
 
    const handleLogin = async(e:React.FormEvent) => {
         e.preventDefault()
-        await login({email, password})
+        try{
+          await login({email, password})
+        }catch(error){
+          console.error(error)
+        }
+        
    }
 
    useEffect(()=>{
@@ -84,7 +89,7 @@ export default function LoginPage() {
             className="w-full rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
             disabled={userStatus === 'loading' || !email || !password}
           >
-            {userStatus === 'loading' ? 'Loading' : 'Login'}
+            {userStatus === 'loading' ? 'Signing in...' : 'Login'}
           </button>
         </form>
 

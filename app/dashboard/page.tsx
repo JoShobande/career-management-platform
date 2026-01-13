@@ -11,7 +11,6 @@ export default function DashboardPage() {
     <ProtectedRoute>
       <AuthLayout>
         <div className="space-y-6">
-          {/* Page header */}
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
               Dashboard
@@ -20,8 +19,6 @@ export default function DashboardPage() {
               Welcome back{user?.name ? `, ${user.name}` : ''}
             </p>
           </div>
-
-          {/* Account info */}
           <div className="rounded-md border bg-white p-4 space-y-2">
             <h2 className="text-sm font-medium text-gray-700">
               Account
@@ -42,8 +39,6 @@ export default function DashboardPage() {
               </p>
             </div>
           </div>
-
-          {/* Placeholder / coming soon */}
           <div className="rounded-md border border-dashed bg-gray-50 p-4 text-sm text-gray-500">
             Applications and analytics will appear here.
           </div>

@@ -1,35 +1,51 @@
+// components/layout/Sidebar.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+const navItems = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Applications', href: '/applications' },
+  { label: 'Settings', href: '/settings' },
+];
+
 export function Sidebar() {
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path;
-
   return (
-    <aside className="w-60 border-r bg-white p-4">
-      <nav className="space-y-1 text-sm">
-        <Link
-          href="/dashboard"
-          className={`block rounded px-3 py-2 ${
-            isActive('/dashboard')
-              ? 'bg-gray-100 font-medium text-gray-900'
-              : 'text-gray-700 hover:bg-gray-50'
-          }`}
-        >
-          Dashboard
-        </Link>
-
-        <div className="block rounded px-3 py-2 text-gray-400 cursor-not-allowed">
-          Applications (soon)
+    <aside className="w-64 border-r bg-white">
+      <div className="h-full p-4">
+        <div className="mb-3">
         </div>
-
-        <div className="block rounded px-3 py-2 text-gray-400 cursor-not-allowed">
-          Settings (soon)
-        </div>
-      </nav>
+        <nav className="space-y-1">
+          {navItems.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={[
+                  'group flex items-center justify-between rounded-lg px-3 py-2 text-sm transition',
+                  active
+                    ? 'bg-gray-900 text-white shadow-sm'
+                    : 'text-gray-700 hover:bg-gray-50',
+                ].join(' ')}
+              >
+                <span className="font-medium">{item.label}</span>
+                <span
+                  className={[
+                    'text-xs',
+                    active ? 'text-white/80' : 'text-gray-400 group-hover:text-gray-500',
+                  ].join(' ')}
+                >
+                  →
+                </span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
     </aside>
   );
 }

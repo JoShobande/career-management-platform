@@ -4,6 +4,7 @@
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { LoadingState } from "../ui/LoadingState";
 
 
 type ProtectedRouteProps = {
@@ -22,7 +23,7 @@ export default function ProtectedRoute({children}:ProtectedRouteProps){
     },[userStatus, router])
 
     if(userStatus === 'loading'){
-        return <div>Loading...</div>
+        return <LoadingState title="Loading..."/>
     }
     
     if (userStatus === 'unauthenticated') {

@@ -1,24 +1,19 @@
+export type JobApplicationStatus = "active" | "rejected" | "offer";
 
-export type JobApplicationStatus = 'active' | 'rejected' | 'offer'
-
-export interface JobApplication{
-    id:string;
-    roleName: string
-    companyName: string
-    status: JobApplicationStatus
-    dateApplied: string
+export interface JobApplication {
+  id: string;
+  roleName: string;
+  companyName: string;
+  status: JobApplicationStatus;
+  dateApplied: string;
 }
 
-export type NewJobApplication = Omit<JobApplication, 'id'>
+export type NewJobApplication = Omit<JobApplication, "id">;
 
 export type ApplicationsContextValue = {
   applications: JobApplication[];
-  status: 'loading' | 'ready' | 'error';
-  addApplication:(input:NewJobApplication) => void;
-  deleteApplication:(id:string)=>void;
+  status: "loading" | "ready" | "error";
+  addApplication: (input: NewJobApplication) => void;
+  updateApplication: (id: string, input: NewJobApplication) => void;
+  deleteApplication: (id: string) => void;
 };
-
-
-
-
-

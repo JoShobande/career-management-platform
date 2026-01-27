@@ -7,9 +7,15 @@ import type { JobApplicationStatus } from "@/lib/application/types";
 import { Modal } from "@/components/ui/Modal";
 
 export default function ApplicationsPage() {
-  const { applications, status, addApplication, deleteApplication } =
-    useApplications();
+  const {
+    applications,
+    status,
+    addApplication,
+    deleteApplication,
+    updateApplication,
+  } = useApplications();
   const [open, setOpen] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
 
   const [roleName, setRoleName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -26,12 +32,18 @@ export default function ApplicationsPage() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    addApplication({
+    const input = {
       roleName: roleName.trim(),
       companyName: companyName.trim(),
       status: appStatus,
       dateApplied,
-    });
+    };
+
+    if (editId === null) {
+      addApplication(input);
+    } else {
+      updateApplication(editId, input);
+    }
 
     resetForm();
     setOpen(false);
@@ -40,6 +52,7 @@ export default function ApplicationsPage() {
   const closeForm = () => {
     setOpen(false);
     resetForm();
+    setEditId(null);
   };
 
   if (status === "loading") {
@@ -179,7 +192,22 @@ export default function ApplicationsPage() {
                     >
                       {application.status}
                     </span>
-
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditId(application.id);
+                        setRoleName(application.roleName);
+                        setCompanyName(application.companyName);
+                        setAppStatus(application.status);
+                        setDateApplied(application.dateApplied);
+                        setOpen(true);
+                      }}
+                      className="rounded-md border border-transparent px-2 py-1 text-xs font-medium text-gray-500 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      aria-label={`Edit ${application.roleName} at ${application.companyName}`}
+                    >
+                      Edit
+                    </button>
                     <button
                       type="button"
                       onClick={(e) => {

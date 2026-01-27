@@ -37,8 +37,16 @@ export  function ApplicationsProvider({children}: {children:React.ReactNode}){
        })
     }
 
+    const deleteApplication = (id:string) => {
+        setApplications((prev)=>{
+            const next = prev.filter(app => app.id !== id)
+            saveApplications(next)
+            return next
+       })
+    }
 
-    return <ApplicationsContext.Provider value={{applications, status, addApplication}}>
+
+    return <ApplicationsContext.Provider value={{applications, status, addApplication, deleteApplication}}>
         {children}
     </ApplicationsContext.Provider>
 }

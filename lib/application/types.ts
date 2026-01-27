@@ -15,6 +15,7 @@ export type ApplicationsContextValue = {
   applications: JobApplication[];
   status: 'loading' | 'ready' | 'error';
   addApplication:(input:NewJobApplication) => void;
+  deleteApplication:(id:string)=>void;
 };
 
 

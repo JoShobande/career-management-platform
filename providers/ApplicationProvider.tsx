@@ -35,7 +35,7 @@ export function ApplicationsProvider({
   }, []);
 
   const addApplication = (input: NewJobApplication) => {
-    const newApp: JoBApplication = {
+    const newApp: JobApplication = {
       ...input,
       id: crypto.randomUUID(),
     };

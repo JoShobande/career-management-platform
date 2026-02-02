@@ -61,7 +61,11 @@ export default function ApplicationsPage() {
 
   return (
     <>
-      <Modal open={open} title="Add application" onClose={() => setOpen(false)}>
+      <Modal
+        open={open}
+        title={editId ? "Edit Application" : "Add Application"}
+        onClose={() => setOpen(false)}
+      >
         <form className="space-y-4" onSubmit={onSubmit}>
           <div className="space-y-1">
             <label className="text-sm font-medium text-gray-700">
@@ -129,7 +133,7 @@ export default function ApplicationsPage() {
               className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
               disabled={!roleName.trim() || !companyName.trim() || !dateApplied}
             >
-              Add
+              {editId ? "Save Changes" : "Add"}
             </button>
           </div>
         </form>

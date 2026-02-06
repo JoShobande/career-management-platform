@@ -22,6 +22,25 @@ export default function ApplicationsPage() {
   const [appStatus, setAppStatus] = useState<JobApplicationStatus>("active");
   const [dateApplied, setDateApplied] = useState("");
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "active" | "offer" | "rejected"
+  >("all");
+
+  const visibleApplications = applications
+    .filter((application) =>
+      statusFilter === "all" ? true : application.status === statusFilter,
+    )
+    .filter((application) => {
+      const q = searchQuery.trim().toLowerCase();
+      if (!q) return true;
+
+      return (
+        application.companyName.toLowerCase().includes(q) ||
+        application.roleName.toLowerCase().includes(q)
+      );
+    });
+
   const resetForm = () => {
     setRoleName("");
     setCompanyName("");
@@ -140,7 +159,7 @@ export default function ApplicationsPage() {
       </Modal>
 
       <div className="space-y-4">
-        <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
               Applications
@@ -150,12 +169,35 @@ export default function ApplicationsPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => setOpen(true)}
-            className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
-          >
-            Add application
-          </button>
+          <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto sm:justify-end">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search role or company"
+              className="w-full sm:w-64 rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200"
+            />
+
+            <select
+              value={statusFilter}
+              onChange={(e) =>
+                setStatusFilter(e.target.value as typeof statusFilter)
+              }
+              className="w-full sm:w-auto rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200"
+            >
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="offer">Offer</option>
+              <option value="rejected">Rejected</option>
+            </select>
+
+            <button
+              onClick={() => setOpen(true)}
+              className="w-full sm:w-auto rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
+            >
+              Add application
+            </button>
+          </div>
         </div>
 
         {applications.length === 0 ? (
@@ -168,12 +210,37 @@ export default function ApplicationsPage() {
               your first one.
             </p>
           </div>
+        ) : visibleApplications.length === 0 ? (
+          <div className="rounded-lg border border-dashed bg-white p-8 text-center">
+            <p className="text-sm font-medium text-gray-900">
+              No matches found
+            </p>
+            <p className="mt-1 text-sm text-gray-500">
+              Try a different search term or change the status filter.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="rounded-md border px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                Clear search
+              </button>
+              <button
+                type="button"
+                onClick={() => setStatusFilter("all")}
+                className="rounded-md border px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              >
+                Reset filter
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="space-y-4">
-            {applications.map((application) => (
+            {visibleApplications.map((application) => (
               <div
                 key={application.id}
-                className="rounded-lg border bg-white p-4 shadow-sm hover:shadow transition"
+                className="rounded-lg border bg-white p-4 shadow-sm transition hover:shadow"
               >
                 <div className="flex items-start justify-between">
                   <div>
@@ -184,9 +251,10 @@ export default function ApplicationsPage() {
                       {application.companyName}
                     </p>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      className={`rounded-full px-2 py-1 text-xs font-medium ${
                         application.status === "active"
                           ? "bg-blue-50 text-blue-700"
                           : application.status === "offer"
@@ -196,6 +264,7 @@ export default function ApplicationsPage() {
                     >
                       {application.status}
                     </span>
+
                     <button
                       type="button"
                       onClick={(e) => {
@@ -212,6 +281,7 @@ export default function ApplicationsPage() {
                     >
                       Edit
                     </button>
+
                     <button
                       type="button"
                       onClick={(e) => {
@@ -226,6 +296,7 @@ export default function ApplicationsPage() {
                     </button>
                   </div>
                 </div>
+
                 <div className="mt-3 text-xs text-gray-500">
                   Applied on {application.dateApplied}
                 </div>

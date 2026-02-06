@@ -41,6 +41,30 @@ export default function ApplicationsPage() {
       );
     });
 
+  const count = applications.reduce(
+    (allCounts, currentItem) => {
+      allCounts.total += 1;
+      switch (currentItem.status) {
+        case "active":
+          allCounts.active += 1;
+          break;
+        case "offer":
+          allCounts.offer += 1;
+          break;
+        case "rejected":
+          allCounts.rejected += 1;
+          break;
+      }
+      return allCounts;
+    },
+    {
+      total: 0,
+      active: 0,
+      offer: 0,
+      rejected: 0,
+    },
+  );
+
   const resetForm = () => {
     setRoleName("");
     setCompanyName("");
@@ -198,6 +222,49 @@ export default function ApplicationsPage() {
               Add application
             </button>
           </div>
+        </div>
+        {/* Summary strip */}
+        <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-lg border bg-white p-3">
+              <p className="text-xs font-medium text-gray-500">Total</p>
+              <p className="mt-1 text-lg font-semibold text-gray-900">
+                {count.total}
+              </p>
+            </div>
+
+            <div className="rounded-lg border bg-white p-3">
+              <p className="text-xs font-medium text-gray-500">Active</p>
+              <p className="mt-1 text-lg font-semibold text-gray-900">
+                {count.active}
+              </p>
+            </div>
+
+            <div className="rounded-lg border bg-white p-3">
+              <p className="text-xs font-medium text-gray-500">Offer</p>
+              <p className="mt-1 text-lg font-semibold text-gray-900">
+                {count.offer}
+              </p>
+            </div>
+
+            <div className="rounded-lg border bg-white p-3">
+              <p className="text-xs font-medium text-gray-500">Rejected</p>
+              <p className="mt-1 text-lg font-semibold text-gray-900">
+                {count.rejected}
+              </p>
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-500">
+            Showing{" "}
+            <span className="font-medium text-gray-900">
+              {visibleApplications.length}
+            </span>{" "}
+            of{" "}
+            <span className="font-medium text-gray-900">
+              {applications.length}
+            </span>
+          </p>
         </div>
 
         {applications.length === 0 ? (
